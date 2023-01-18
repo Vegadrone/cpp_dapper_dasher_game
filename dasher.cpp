@@ -11,7 +11,7 @@ int main(){
     
 
     SetTargetFPS(60);
-    while (true)
+    while (WindowShouldClose() == false)
     {
         BeginDrawing();
         ClearBackground(WHITE);
