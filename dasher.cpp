@@ -21,6 +21,11 @@ int main(){
     //Accelleration due to gravity ((pixels * frame) * frame)
     const int gravity {1};
 
+    //is in Air?
+    bool isInAir{};
+    //JumpVelocity
+    const int JumpVel{-20};
+
     //Initialize the window
     InitWindow(windowWidth, windowHeight, "Dapper Dasher");
     
@@ -44,16 +49,18 @@ int main(){
         if (posY >= (windowHeight - rectHeight))
         {
             velocity = 0;
+            isInAir = false;
         }
         else
         {
             velocity += gravity;
+            isInAir = true;
         }
         
         //Rectangle Jump
-        if (IsKeyPressed(KEY_SPACE))
+        if (IsKeyPressed(KEY_SPACE) && !isInAir)
         {        
-            velocity -= 10;
+            velocity += JumpVel;
         }        
 
         //Update Position
