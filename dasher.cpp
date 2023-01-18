@@ -18,6 +18,9 @@ int main(){
     //Rectangle velocity
     int velocity {};
 
+    //Accelleration due to gravity ((pixels * frame) * frame)
+    const int gravity {1};
+
     //Initialize the window
     InitWindow(windowWidth, windowHeight, "Dapper Dasher");
     
@@ -33,11 +36,27 @@ int main(){
         //Draw rectangle
         DrawRectangle((windowWidth/2), posY, rectWidth, rectHeight, BLUE);
 
+        //Ground Check
+        /*
+            Se metti == quando salti posY non è più uguale a wH - rH di conseguenza la velocità non
+            è più zero come nell'if ma va nell'else e il rettangolo sprofonda
+        */
+        if (posY >= (windowHeight - rectHeight))
+        {
+            velocity = 0;
+        }
+        else
+        {
+            velocity += gravity;
+        }
+        
         //Rectangle Jump
         if (IsKeyPressed(KEY_SPACE))
         {        
             velocity -= 10;
-        }
+        }        
+
+        //Update Position
         posY += velocity;
         
         //Stop Drawing
