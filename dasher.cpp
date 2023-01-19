@@ -34,16 +34,15 @@ int main(){
     //JumpVelocity
     const int JumpVel{-20};
 
-    
     //Setting FPS
     SetTargetFPS(60);
+
     //GameLoop
     while (!WindowShouldClose())
     {   
         //Start Drawing
         BeginDrawing();
         ClearBackground(WHITE);
-
 
         //Ground Check
         /*
@@ -71,7 +70,8 @@ int main(){
 
         //Update Position
         scarfyPos.y += velocity;
-        //Draw rectangle
+
+        //Draw rectangle/character
         DrawTextureRec(scarfy, scarfyRec, scarfyPos, WHITE);
         
         //Stop Drawing
