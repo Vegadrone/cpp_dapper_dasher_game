@@ -8,11 +8,11 @@ int main(){
     const int windowWidth {800};
     const int windowHeight {500};
 
-    //Rectangle velocity
+    //Rectangle /Char velocity
     int velocity {};
 
-    //Accelleration due to gravity ((pixels * frame) * frame)
-    const int gravity {1};
+    //Accelleration due to gravity ((pixels * second) * second)
+    const int gravity {1'000};
 
     //Initialize the window
     //Mettilo SEMPRE prima del caricamento delle texture o da errori!
@@ -31,8 +31,8 @@ int main(){
 
     //is in Air?
     bool isInAir{};
-    //JumpVelocity
-    const int JumpVel{-20};
+    //JumpVelocity pixels * seconds
+    const int JumpVel{-600};
 
     //Setting FPS
     SetTargetFPS(60);
@@ -43,6 +43,9 @@ int main(){
         //Start Drawing
         BeginDrawing();
         ClearBackground(WHITE);
+
+        //deltaTime const
+        const float dT {GetFrameTime()};
 
         //Ground Check
         /*
@@ -57,7 +60,7 @@ int main(){
         }
         else
         {
-            velocity += gravity;
+            velocity += gravity*dT;
             // In questo caso il rettangolo/character è in aria quindi setto a true
             isInAir = true;
         }
@@ -69,7 +72,7 @@ int main(){
         }        
 
         //Update Position
-        scarfyPos.y += velocity;
+        scarfyPos.y += velocity*dT;
 
         //Draw rectangle/character
         DrawTextureRec(scarfy, scarfyRec, scarfyPos, WHITE);
