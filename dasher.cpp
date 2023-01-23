@@ -10,8 +10,8 @@ int main(){
 
     //Rectangle /Char velocity
     int velocity {};
-
-    int nebVel{};
+    // nebula x velocity frame per second
+    int nebVel{-600};
 
     //Accelleration due to gravity ((pixels * second) * second)
     const int gravity {1'000};
@@ -34,8 +34,13 @@ int main(){
 
     //Nebula var
     Texture2D nebula = LoadTexture("textures/12_nebula_spritesheet.png");
-    Rectangle nebulaRec;
-    Vector2 nebulaPos;
+    /*
+    Invece di inizializzare tutto separatamente si può farlo dentro parentesi graffe.
+    Per capire quali paramatei utilizzare e in che ordine fare click destro sul tipo sepciale, 
+    andare su peek e poi peek definition.
+    */
+    Rectangle nebulaRec{0.0, 0.0, nebula.width/8, nebula.height/8};
+    Vector2 nebulaPos{windowWidth, windowHeight - nebulaRec.height};
 
 
 
@@ -73,13 +78,29 @@ int main(){
         if (scarfyPos.y >= (windowHeight - scarfyRec.height))
         {
             velocity = 0;
-            //In questo caso il rettangolo/character è a terra quindi setto a false
+            // In questo caso il rettangolo/character è a terra quindi setto a false
+            //  Update running time animation
+            runningTime += dT;
+
+            if (runningTime >= updateTime)
+            {
+                runningTime = 0.0;
+
+                // update animation frame
+                scarfyRec.x = frame * scarfyRec.width;
+                frame++;
+                if (frame > 5)
+                {
+                    frame = 0;
+                }
+            }
             isInAir = false;
         }
         else
         {
             velocity += gravity*dT;
             // In questo caso il rettangolo/character è in aria quindi setto a true
+
             isInAir = true;
         }
         
@@ -89,27 +110,18 @@ int main(){
             velocity += JumpVel;
         }        
 
-        //Update Position
+        //Update nebula position 
+        nebulaPos.x += nebVel*dT;
+
+        //Update Scarfy Position
         scarfyPos.y += velocity*dT;
 
-        // Update running time animation
-        runningTime += dT;
-
-        if (runningTime >= updateTime)
-        {
-            runningTime = 0.0;
-
-            // update animation frame
-            scarfyRec.x = frame * scarfyRec.width;
-            frame++;
-            if (frame > 5)
-            {
-                frame = 0;
-            }
-        }
         
-        //Draw rectangle/character
+        
+        //Draw scarfy
         DrawTextureRec(scarfy, scarfyRec, scarfyPos, WHITE);
+        //Draw Nebulas
+        DrawTextureRec(nebula, nebulaRec,nebulaPos, WHITE);
         
         //Stop Drawing
         EndDrawing();
