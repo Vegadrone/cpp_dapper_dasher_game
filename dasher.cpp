@@ -11,6 +11,8 @@ int main(){
     //Rectangle /Char velocity
     int velocity {};
 
+    int nebVel{};
+
     //Accelleration due to gravity ((pixels * second) * second)
     const int gravity {1'000};
 
@@ -18,7 +20,8 @@ int main(){
     //Mettilo SEMPRE prima del caricamento delle texture o da errori!
     InitWindow(windowWidth, windowHeight, "Dapper Dasher");
 
-    //Texture
+    //Textures
+    //Scarfy var
     Texture2D scarfy = LoadTexture("textures/scarfy.png");
     Rectangle scarfyRec;
     scarfyRec.width = scarfy.width/6;
@@ -29,13 +32,28 @@ int main(){
     scarfyPos.x = windowWidth/2 - scarfyRec.width/2;
     scarfyPos.y = windowHeight - scarfyRec.height;
 
+    //Nebula var
+    Texture2D nebula = LoadTexture("textures/12_nebula_spritesheet.png");
+    Rectangle nebulaRec;
+    Vector2 nebulaPos;
+
+
+
     //is in Air?
     bool isInAir{};
     //JumpVelocity pixels * seconds
     const int JumpVel{-600};
 
-    //Setting FPS
-    SetTargetFPS(60);
+    //Animation frame
+    int frame{};
+
+    //Amount of time  before we update animation frame
+    const float updateTime{1.0/12.0};
+    // Scarfy running time animation
+    float runningTime{};
+
+        // Setting FPS
+        SetTargetFPS(60);
 
     //GameLoop
     while (!WindowShouldClose())
@@ -74,6 +92,22 @@ int main(){
         //Update Position
         scarfyPos.y += velocity*dT;
 
+        // Update running time animation
+        runningTime += dT;
+
+        if (runningTime >= updateTime)
+        {
+            runningTime = 0.0;
+
+            // update animation frame
+            scarfyRec.x = frame * scarfyRec.width;
+            frame++;
+            if (frame > 5)
+            {
+                frame = 0;
+            }
+        }
+        
         //Draw rectangle/character
         DrawTextureRec(scarfy, scarfyRec, scarfyPos, WHITE);
         
