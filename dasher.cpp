@@ -11,7 +11,7 @@ int main(){
     //Rectangle /Char velocity
     int velocity {};
     // nebula x velocity frame per second
-    int nebVel{-600};
+    int nebVel{-200};
 
     //Accelleration due to gravity ((pixels * second) * second)
     const int gravity {1'000};
@@ -42,8 +42,6 @@ int main(){
     Rectangle nebulaRec{0.0, 0.0, nebula.width/8, nebula.height/8};
     Vector2 nebulaPos{windowWidth, windowHeight - nebulaRec.height};
 
-
-
     //is in Air?
     bool isInAir{};
     //JumpVelocity pixels * seconds
@@ -51,11 +49,13 @@ int main(){
 
     //Animation frame
     int frame{};
+    int nebFrame{};
 
     //Amount of time  before we update animation frame
-    const float updateTime{1.0/12.0};
-    // Scarfy running time animation
-    float runningTime{};
+    const float updateTime{1.0/12.0};//Scarfy
+    const float updateNebTime{1.0/12.0};    // Running time animation
+    float runningTime{};//Scarfy
+    float runningNebTime{};
 
         // Setting FPS
         SetTargetFPS(60);
@@ -108,7 +108,23 @@ int main(){
         if (IsKeyPressed(KEY_SPACE) && !isInAir)
         {        
             velocity += JumpVel;
-        }        
+        }
+
+        //Nebula Animation
+        runningNebTime += dT;
+
+        if (runningNebTime >= updateNebTime)
+        {
+            runningNebTime = 0.0;
+
+            // update animation frame
+            nebulaRec.x = nebFrame * nebulaRec.width;
+            nebFrame++;
+            if (nebFrame > 7)
+            {
+                nebFrame = 0;
+            }
+        }
 
         //Update nebula position 
         nebulaPos.x += nebVel*dT;
