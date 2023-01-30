@@ -102,6 +102,7 @@ int main(){
         nebulae[i].pos.x = windowDimensions[0] + i * 300;
     }
 
+    //prendo la posizione dell'ultimo elemento dell'array
     float finishLine{nebulae[sizeOfNebulae - 1].pos.x};
 
     Texture2D background = LoadTexture("textures/far-buildings.png");
@@ -209,10 +210,12 @@ int main(){
         {
             nebulae[i] = updateAnimData(nebulae[i], dT, 7);
         }
-        
+
+        //Defining collision
         for(AnimData nebula : nebulae){
             
-            float pad {20};
+            //padding delle nebulae
+            float pad {50};
             Rectangle nebRec{
                 nebula.pos.x + pad,
                 nebula.pos.y + pad,
@@ -233,7 +236,17 @@ int main(){
             } 
         }
 
-        if (!collision){
+
+        //Win/Lose conditions
+        if (collision){
+
+            DrawText("GAME OVER!", windowDimensions[0]/4, windowDimensions[1]/2, 40, RED);
+            
+        } else if (scarfyData.pos.x >= finishLine){
+
+            DrawText("YOU WIN!", windowDimensions[0] / 4, windowDimensions[1] / 2, 50, RED);
+        } else {
+
             //Draw scarfy
             DrawTextureRec(scarfy, scarfyData.rec, scarfyData.pos, WHITE);
 
@@ -241,11 +254,13 @@ int main(){
             {
                 // Draw Nebulae
                 DrawTextureRec(nebula, nebulae[i].rec, nebulae[i].pos, WHITE);
-            }
-        }       
+
+            } 
+        }
 
         //Update Finish Line
         finishLine += nebVel * dT;
+
 
         //Stop Drawing
         EndDrawing();
