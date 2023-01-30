@@ -11,6 +11,12 @@ struct AnimData
     float runningTime;
 };
 
+
+//Ground Check
+/*
+    Se metti == quando salti posY non è più uguale a wH - rH di conseguenza la velocità non
+    è più zero come nell'if ma va nell'else e il rettangolo sprofonda
+*/
 bool isOnGround(AnimData data, int windowHeight){
     return data.pos.y >= windowHeight - data.rec.height;
 }
@@ -27,6 +33,19 @@ AnimData updateAnimData (AnimData data, float deltaTime, int maxFrame){
     }
     return data;
 }
+
+// void drawBg(Texture2D texture, Vector2 bg1Pos, Vector2 bg2Pos, float bgX, float deltaTime){
+//     // Draw Background
+// bgX  -= 20 * deltaTime;
+
+// if (bgX <= -texture.width * 2){
+//     bgX = 0.0;
+// }
+//     Vector2 bg1Pos{bgX, 0.0};
+//     DrawTextureEx(texture, bg1Pos, 0.0, 2.0, WHITE);
+//     Vector2 bg2Pos{bgX + texture.width * 2, 0.0};
+//     DrawTextureEx(texture, bg2Pos, 0.0, 2.0, WHITE);
+// }
 
 //Main function
 int main(){
@@ -83,6 +102,8 @@ int main(){
         nebulae[i].pos.x = windowDimensions[0] + i * 300;
     }
 
+    float finishLine{nebulae[sizeOfNebulae - 1].pos.x};
+
     Texture2D background = LoadTexture("textures/far-buildings.png");
     float bgX{};
 
@@ -123,6 +144,7 @@ int main(){
 
         //Draw Midground
         mgX -= 40 * dT;
+
         if (mgX <= -midGround.width * 2)
         {
             mgX = 0.0;
@@ -134,6 +156,7 @@ int main(){
 
         // Draw foreground
         fgX -= 80 * dT;
+
         if (fgX <= -foreGround.width * 2)
         {
             fgX = 0.0;
@@ -142,12 +165,6 @@ int main(){
         DrawTextureEx(foreGround, fg1Pos, 0.0, 2.0, WHITE);
         Vector2 fg2Pos{fgX + foreGround.width * 2, 0.0};
         DrawTextureEx(foreGround, fg2Pos, 0.0, 2.0, WHITE);
-
-        //Ground Check
-        /*
-            Se metti == quando salti posY non è più uguale a wH - rH di conseguenza la velocità non
-            è più zero come nell'if ma va nell'else e il rettangolo sprofonda
-        */
         if (isOnGround(scarfyData, windowDimensions[1]))
         {
             velocity = 0;
