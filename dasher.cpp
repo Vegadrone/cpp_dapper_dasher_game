@@ -34,18 +34,18 @@ AnimData updateAnimData (AnimData data, float deltaTime, int maxFrame){
     return data;
 }
 
-// void drawBg(Texture2D texture, Vector2 bg1Pos, Vector2 bg2Pos, float bgX, float deltaTime){
-//     // Draw Background
-// bgX  -= 20 * deltaTime;
+void drawBg(Texture2D texture, float deltaTime, float scrollSpeed, float& bgX){
+    // Draw Background
+bgX  -= scrollSpeed * deltaTime;
 
-// if (bgX <= -texture.width * 2){
-//     bgX = 0.0;
-// }
-//     Vector2 bg1Pos{bgX, 0.0};
-//     DrawTextureEx(texture, bg1Pos, 0.0, 2.0, WHITE);
-//     Vector2 bg2Pos{bgX + texture.width * 2, 0.0};
-//     DrawTextureEx(texture, bg2Pos, 0.0, 2.0, WHITE);
-// }
+if (bgX <= -texture.width * 2){
+    bgX = 0.0;
+}
+    Vector2 bg1Pos{bgX, 0.0};
+    DrawTextureEx(texture, bg1Pos, 0.0, 2.0, WHITE);
+    Vector2 bg2Pos{bgX + texture.width * 2, 0.0};
+    DrawTextureEx(texture, bg2Pos, 0.0, 2.0, WHITE);
+}
 
 //Main function
 int main(){
@@ -135,39 +135,13 @@ int main(){
         ClearBackground(WHITE);
 
         //Draw Background
-        bgX  -= 20 * dT;
-
-        if(bgX <= - background.width*2){
-            bgX = 0.0;
-        }
-        Vector2 bg1Pos{bgX, 0.0};
-        DrawTextureEx(background, bg1Pos, 0.0, 2.0, WHITE);
-        Vector2 bg2Pos{bgX + background.width*2, 0.0};
-        DrawTextureEx(background, bg2Pos, 0.0, 2.0, WHITE);
+        drawBg(background, dT, 20, bgX);
 
         //Draw Midground
-        mgX -= 40 * dT;
-
-        if (mgX <= -midGround.width * 2)
-        {
-            mgX = 0.0;
-        }
-        Vector2 mg1Pos {mgX, 0.0};
-        DrawTextureEx(midGround, mg1Pos, 0.0, 2.0, WHITE);
-        Vector2 mg2Pos{mgX + midGround.width * 2, 0.0};
-        DrawTextureEx(midGround, mg2Pos, 0.0, 2.0, WHITE);
+        drawBg(midGround, dT, 40, mgX);
 
         // Draw foreground
-        fgX -= 80 * dT;
-
-        if (fgX <= -foreGround.width * 2)
-        {
-            fgX = 0.0;
-        }
-        Vector2 fg1Pos{fgX, 0.0};
-        DrawTextureEx(foreGround, fg1Pos, 0.0, 2.0, WHITE);
-        Vector2 fg2Pos{fgX + foreGround.width * 2, 0.0};
-        DrawTextureEx(foreGround, fg2Pos, 0.0, 2.0, WHITE);
+        drawBg(foreGround, dT, 80, fgX);
 
         //GroundCheck
         if (isOnGround(scarfyData, windowDimensions[1]))
@@ -260,7 +234,6 @@ int main(){
 
         //Update Finish Line
         finishLine += nebVel * dT;
-
 
         //Stop Drawing
         EndDrawing();
